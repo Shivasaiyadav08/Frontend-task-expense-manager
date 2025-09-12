@@ -1,6 +1,6 @@
 'use-client'
 import { useState } from "react";
-import axios from "axios";
+import {forgotPassword} from '../api/api'
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -9,7 +9,7 @@ const ForgotPassword = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/forgot-password", { email });
+      const res = await forgotPassword(email);
       setMessage(res.data.message);
     } catch (err:any) {
       setMessage(err.response.data.message || "Error sending email");

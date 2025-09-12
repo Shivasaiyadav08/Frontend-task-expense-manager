@@ -5,8 +5,8 @@ import axios from 'axios';
 
 // used
 const API = axios.create({
-  //baseURL: 'https://backend-taskandexpenses-manager.onrender.com/api',
-  baseURL:`hhtp://localhost:5000/api`,
+  baseURL: 'https://backend-taskandexpenses-manager.onrender.com/api',
+  //baseURL:`http://localhost:5000/api`,
 });
 
 //API → axios instance (with baseURL http://localhost:5000/api)
@@ -14,6 +14,15 @@ const API = axios.create({
 
 export const registerUser = (data: { name: string; email: string; password: string }) =>
   API.post('/auth/register', data);
+
+export const forgotPassword=(email : string)=>
+ API.post('/auth/forgot-password',{email});
+
+// ✅ Send both token (in URL) and new password (in body)
+export const resetPassword = (token: string, password: string) => {
+  return API.put(`/auth/reset-password/${token}`, { password });
+};
+
 
 export const loginUser = (data: { email: string; password: string }) =>
   API.post('/auth/login', data);

@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 import { loginUser } from "../api/api";
 
-const Login: React.FC<{ setToken: (t: string) => void ,setName :(t:string)=>void}> = ({ setToken,setName }) => {
+interface LoginProps {
+  setToken: (t: string) => void;
+  setName: (t: string) => void;
+}
+
+const Login: React.FC<LoginProps> = ({ setToken, setName }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -11,15 +17,22 @@ const Login: React.FC<{ setToken: (t: string) => void ,setName :(t:string)=>void
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
     try {
       const res = await loginUser({ email, password });
       setToken(res.data.token);
       localStorage.setItem("token", res.data.token);
+
       setName(res.data.user.name);
-      localStorage.setItem("name",res.data.user.name);
+      localStorage.setItem("name", res.data.user.name);
+
       navigate("/dashboard");
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Login failed");
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || "Login failed");
+      } else {
+        setError("Unexpected error occurred");
+      }
     }
   };
 
@@ -60,8 +73,15 @@ const Login: React.FC<{ setToken: (t: string) => void ,setName :(t:string)=>void
           Login
         </button>
 
+        {/* Forgot password link */}
+        <div className="text-center mt-4">
+          <Link to="/forgot-password" className="text-blue-600 hover:underline">
+            Forgot Password?
+          </Link>
+        </div>
+
         <p className="text-sm text-gray-600 mt-4 text-center">
-          Don’t have an account?{" "}
+          Don't have an account?{" "}
           <span
             className="text-blue-600 cursor-pointer hover:underline"
             onClick={() => navigate("/register")}
