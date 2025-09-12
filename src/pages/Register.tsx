@@ -2,6 +2,7 @@ import { useState } from "react";
 import { registerUser } from "../api/api";
 import { useNavigate } from "react-router-dom";
 
+
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -9,18 +10,24 @@ export default function Register() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    try {
-      const res = await registerUser({ name, email, password });
-      if (res.status === 201) {
-        navigate("/login"); // Auto navigate after success
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Registration failed");
+  e.preventDefault();
+  setError("");
+
+  
+
+  try {
+    
+    const res = await registerUser({ name, email, password });
+    if (res.status === 201) {
+      navigate("/login"); // Auto navigate
     }
-  };
+  } catch (err: any) {
+    setError(err.response?.data?.message || "Registration failed");
+  }
+};
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-100 to-blue-300 px-4">

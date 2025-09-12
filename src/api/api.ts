@@ -5,7 +5,8 @@ import axios from 'axios';
 
 // used
 const API = axios.create({
-  baseURL: 'https://backend-taskandexpenses-manager.onrender.com/api',
+  //baseURL: 'https://backend-taskandexpenses-manager.onrender.com/api',
+  baseURL:`hhtp://localhost:5000/api`,
 });
 
 //API → axios instance (with baseURL http://localhost:5000/api)

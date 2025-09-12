@@ -11,12 +11,13 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Tasks from './pages/Tasks';
 import Expenses from './pages/Expense';
+import ResetPassword from './pages/ResetPassword';
+import ForgotPassword from './pages/ForgotPassword'; // ✅ new page for forgot password
 
 const App: React.FC = () => {
   // token state to track login
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
- const [name, setName] = useState<string>(localStorage.getItem("name") || "");
-
+  const [name, setName] = useState<string>(localStorage.getItem("name") || "");
 
   return (
     <Router>
@@ -34,6 +35,12 @@ const App: React.FC = () => {
           {/* Login & Register pages */}
           <Route path="/login" element={!token ? <Login setToken={setToken} setName={setName}/> : <Navigate to="/dashboard" />} />
           <Route path="/register" element={!token ? <Register /> : <Navigate to="/dashboard" />} />
+
+          {/* Forgot Password page */}
+          <Route path="/forgot-password" element={!token ? <ForgotPassword /> : <Navigate to="/dashboard" />} />
+
+          {/* Reset Password page */}
+          <Route path="/reset-password/:token" element={!token ? <ResetPassword /> : <Navigate to="/dashboard" />} />
 
           {/* Protected pages */}
           <Route path="/dashboard" element={token ? <Dashboard token={token} name={name}/> : <Navigate to="/login" />} />
